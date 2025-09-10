@@ -1,19 +1,23 @@
 package battleship;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
-	ArrayList<String> gameField = new ArrayList<>();
-	Scanner           scanner   = new Scanner(System.in);
-
-
+	Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		Main game = new Main();
-		game.init();
-		game.logGameField();
+		Board board = new Board();
+		board.initBoard();
+		board.logGameField();
+
+		// ask for ships to place
+		Ship aircraftCarrier = game.askForShipsToPlace("Aircraft Carrier", 5);
+		if (aircraftCarrier != null) {
+			board.placeShip(aircraftCarrier);
+			board.logGameField();
+		}
+
 		String coordinatesString = game.askForCoordinates();
 		String[] parts = coordinatesString.split(" ");
 		Coordinate start = Coordinate.parseCoordinate(parts[0]);
@@ -34,17 +38,42 @@ public class Main {
 
 
 
-	private void init() {
-		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
+	/**
+	 * ask the user to place ships
+	 * - Aircraft Carrier is 5 cells
+	 * - Battleship is 4 cells
+	 * - Submarine is 3 cells
+	 * - Cruiser is also 3 cells
+	 * - Destroyer is 2 cells.
+	 * will also check if the length is correct for the type of ship
+	 * will also check that ships do not overlap and are not adjacent
+	 * log Error otherwise
+	 * if ship was placed update the board with O
+	 */
+	private Ship askForShipsToPlace(String type, int askingLength) {
+		System.out.println("Enter the coordinates of the " + type + " (" + askingLength + " cells):");
+		// example: A1 A5
+		String coordinatesString = scanner.nextLine();
+		String[] parts = coordinatesString.split(" ");
+		Coordinate start = Coordinate.parseCoordinate(parts[0]);
+		Coordinate end = Coordinate.parseCoordinate(parts[1]);
+
+		Boolean startIsValid = Coordinate.coordinateIsValid(start);
+		Boolean endIsValid = Coordinate.coordinateIsValid(end);
+
+		if (!startIsValid || !endIsValid) {
+			System.out.println("Error!");
+			return null;
+		}
+
+		Ship ship = new Ship(start, end);
+
+		if (ship.length != askingLength) {
+			System.out.println("Error! Invalid ship length");
+			return null;
+		}
+
+		return ship;
 	}
 
 
@@ -55,14 +84,4 @@ public class Main {
 		return scanner.nextLine();
 	}
 
-
-
-	private void logGameField() {
-		String firstRow = "  1 2 3 4 5 6 7 8 9 10";
-		ArrayList<String> rowPrefix = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J"));
-		System.out.println(firstRow);
-		for (int i = 0; i < gameField.size(); i++) {
-			System.out.println(rowPrefix.get(i) + " " + gameField.get(i));
-		}
-	}
 }
