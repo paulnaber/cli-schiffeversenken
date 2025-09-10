@@ -17,6 +17,11 @@ public class Main {
 			board.placeShip(aircraftCarrier);
 			board.logGameField();
 		}
+		Ship battleship = game.askForShipsToPlace("Battleship", 4);
+		if (battleship != null) {
+			board.placeShip(battleship);
+			board.logGameField();
+		}
 
 		String coordinatesString = game.askForCoordinates();
 		String[] parts = coordinatesString.split(" ");
