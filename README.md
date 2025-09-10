@@ -1,4 +1,4 @@
-Schiffeversenken cli game
+Schiffeversenken cli game  
 https://en.wikipedia.org/wiki/Battleship_(game)
 
 Did this in java just to get a better feel for the language.
@@ -18,14 +18,17 @@ J ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 ```
 
 ~ water (unkown space, fog)
-0 your ship
-X hit ship
+
+0 your ship  
+X hit ship  
 M missed
 
 -   10 x 10 board
--   Coordinate Validation
+-   Ship validation
+-   Coordinate validation
 -   Coordintate input line "A1 A3"
 -   5 Ships
+-
 
 Aircraft Carrier is 5 cells
 Battleship is 4 cells
