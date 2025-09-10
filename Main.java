@@ -12,16 +12,11 @@ public class Main {
 		board.logGameField();
 
 		// ask for ships to place
-		Ship aircraftCarrier = game.askForShipsToPlace("Aircraft Carrier", 5);
-		if (aircraftCarrier != null) {
-			board.placeShip(aircraftCarrier);
-			board.logGameField();
-		}
-		Ship battleship = game.askForShipsToPlace("Battleship", 4);
-		if (battleship != null) {
-			board.placeShip(battleship);
-			board.logGameField();
-		}
+		game.askForShipAndPlaceWithRetry(game, board, "Aircraft Carrier", 5);
+		game.askForShipAndPlaceWithRetry(game, board, "Battleship", 4);
+		game.askForShipAndPlaceWithRetry(game, board, "Submarine", 3);
+		game.askForShipAndPlaceWithRetry(game, board, "Cruiser", 3);
+		game.askForShipAndPlaceWithRetry(game, board, "Destroyer", 2);
 
 		String coordinatesString = game.askForCoordinates();
 		String[] parts = coordinatesString.split(" ");
@@ -73,6 +68,11 @@ public class Main {
 
 		Ship ship = new Ship(start, end);
 
+		if (ship.length == null) {
+			// ship calculation ran in an error
+			return null;
+		}
+
 		if (ship.length != askingLength) {
 			System.out.println("Error! Invalid ship length");
 			return null;
@@ -87,6 +87,21 @@ public class Main {
 		System.out.println("Enter the coordinates of the ship:");
 		// example: A1 A2
 		return scanner.nextLine();
+	}
+
+
+	private void askForShipAndPlaceWithRetry(Main game, Board board, String name, int size) {
+		boolean placed = false;
+		while (!placed) {
+			Ship ship = game.askForShipsToPlace(name, size);
+			if (ship == null) {
+				continue; // if the ship is null the ship was not valid (size)
+			}
+			placed = board.placeShip(ship);
+			if (placed) {
+				board.logGameField();
+			}
+		}
 	}
 
 }

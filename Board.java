@@ -27,7 +27,7 @@ public class Board {
 	 * place ship on the board update gameField with O for the ship's coordinates at this point the ship is already
 	 * validated also check whether the ship can be placed, cannot touch already placed ships
 	 */
-	public void placeShip(Ship ship) {
+	public boolean placeShip(Ship ship) {
 		ArrayList<Coordinate> coordinates = ship.allCoordinates;
 
 		for (Coordinate coordinate : coordinates) {
@@ -36,7 +36,7 @@ public class Board {
 
 			if (!isCellAvailable(row, col)) {
 				System.out.println("Error! cannot place your ship there.");
-				return;
+				return false;
 			}
 		}
 
@@ -48,6 +48,8 @@ public class Board {
 			rowArray[col] = "O";
 			gameField.set(row, String.join(" ", rowArray));
 		}
+
+		return true;
 	}
 
 

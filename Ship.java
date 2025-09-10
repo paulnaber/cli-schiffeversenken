@@ -21,7 +21,7 @@ public class Ship {
 	public void calculateShip() {
 		// diagonal is not allowed
 		if (!(start.x.equals(end.x)) && !(start.y.equals(end.y))) {
-			System.out.println("Error!");
+			System.out.println("Error! Diagonal is not allowed!");
 		}
 		// vertical ship
 		if (start.x.equals(end.x)) {

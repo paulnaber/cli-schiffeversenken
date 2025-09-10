@@ -1,6 +1,8 @@
 Schiffeversenken cli game
 https://en.wikipedia.org/wiki/Battleship_(game)
 
+Did this in java just to get a better feel for the language.
+
 ```
   1 2 3 4 5 6 7 8 9 10
 A ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
