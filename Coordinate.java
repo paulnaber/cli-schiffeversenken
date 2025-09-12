@@ -44,13 +44,24 @@ public class Coordinate {
 	 */
 	public static Coordinate parseCoordinate(String s) {
 		// split into letter(s) and number(s)
-		String letter = s.replaceAll("[0-9]", "");
-		int number = Integer.parseInt(s.replaceAll("[A-Za-z]", ""));
+		String letter;
+		int number;
+		try {
+			letter = s.replaceAll("[0-9]", "");
+			number = Integer.parseInt(s.replaceAll("[A-Za-z]", ""));
+		} catch (Exception err) {
+			System.out.println("Error! Failed to parse coordinate!");
+			return null;
+		}
 		return new Coordinate(letter, number);
 	}
 
 
 	public static Boolean coordinateIsValid(Coordinate c) {
-		return yOrder.contains(c.y) && (c.x >= 1 && c.x <= 10);
+		if (c != null) {
+			return yOrder.contains(c.y) && (c.x >= 1 && c.x <= 10);
+		} else {
+			return false;
+		}
 	}
 }

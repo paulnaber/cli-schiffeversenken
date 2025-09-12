@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
-	ArrayList<String> gameField = new ArrayList<>();
+	ArrayList<String> gameField       = new ArrayList<>();
+	ArrayList<String> hiddenGameField = new ArrayList<>();
+
+	public static enum BoardType {
+		REAL,
+		HIDDEN
+	}
 
 
 
@@ -19,6 +25,8 @@ public class Board {
 		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
 		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
 		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
+
+		hiddenGameField = new ArrayList<>(gameField);
 	}
 
 
@@ -40,7 +48,6 @@ public class Board {
 			}
 		}
 
-
 		for (Coordinate coordinate : coordinates) {
 			int row = coordinate.getYinNumber();
 			int col = coordinate.x - 1;
@@ -54,12 +61,15 @@ public class Board {
 
 
 
-	public void logGameField() {
+	public void logGameField(BoardType boardType) {
 		String firstRow = "  1 2 3 4 5 6 7 8 9 10";
 		ArrayList<String> rowPrefix = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J"));
 		System.out.println(firstRow);
-		for (int i = 0; i < gameField.size(); i++) {
-			System.out.println(rowPrefix.get(i) + " " + gameField.get(i));
+
+		ArrayList<String> field = boardType.equals(BoardType.HIDDEN) ? hiddenGameField : gameField;
+
+		for (int i = 0; i < field.size(); i++) {
+			System.out.println(rowPrefix.get(i) + " " + field.get(i));
 		}
 	}
 
@@ -114,5 +124,29 @@ public class Board {
 	private boolean isInsideBoard(int row, int col) {
 		return row >= 0 && row < gameField.size()
 				&& col >= 0 && col < gameField.get(row).split(" ").length;
+	}
+
+
+
+	/**
+	 * shoot at coordinate if ship is hit mark with X if nothing was hin mark with M return true if something was hit
+	 * return false if nothing was hit
+	 */
+	public boolean shoot(Coordinate coordinate) {
+		int row = coordinate.getYinNumber();
+		int col = coordinate.x - 1;
+
+		boolean shipAtCoordinate = hasShipAt(row, col);
+		String[] rowArray = gameField.get(row).split(" ");
+		if (shipAtCoordinate) {
+			rowArray[col] = "X";
+		}
+		else {
+			rowArray[col] = "M";
+		}
+		gameField.set(row, String.join(" ", rowArray));
+		hiddenGameField.set(row, String.join(" ", rowArray));
+
+		return shipAtCoordinate;
 	}
 }
