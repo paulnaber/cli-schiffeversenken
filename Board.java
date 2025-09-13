@@ -2,6 +2,7 @@ package battleship;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
 	ArrayList<String>     gameField         = new ArrayList<>();
@@ -148,15 +149,17 @@ public class Board {
 
 		boolean shipAtCoordinate = hasShipAt(row, col);
 		String[] rowArray = gameField.get(row).split(" ");
+		String[] hiddenRowArray = gameField.get(row).split(" ");
 		if (shipAtCoordinate) {
 			rowArray[col] = "X";
+			hiddenRowArray[col] = "X";
 			allHitCoordinates.add(coordinate);
 		}
 		else {
 			rowArray[col] = "M";
 		}
 		gameField.set(row, String.join(" ", rowArray));
-		hiddenGameField.set(row, String.join(" ", rowArray));
+		hiddenGameField.set(row, String.join(" ", hiddenRowArray));
 
 		return shipAtCoordinate;
 	}
@@ -167,16 +170,28 @@ public class Board {
 	 * method to check if a ship was fully hit update the list, do logs also check if all ships sank
 	 */
 	public boolean checkAndUpdateLivingShips() {
+		List<Ship> shipsToRemove = new ArrayList<>();
+		System.out.println("allLivingShips size: " + allLivingShips.size());
+		System.out.println("allHitCoordinates: " + allHitCoordinates);
 		for (Ship ship : allLivingShips) {
+			System.out.println("Checking ship: " + ship);
+			System.out.println("Ship coordinates: " + ship.allCoordinates);
 			boolean shipFullyHit = allHitCoordinates.containsAll(ship.allCoordinates);
+			System.out.println("shipFullyHit: " + shipFullyHit);
 			if (shipFullyHit) {
-				allLivingShips.remove(ship);
-				System.out.println("You sank a ship!");
-			}
-			if (allLivingShips.isEmpty()) {
-				return true;
+				shipsToRemove.add(ship);
 			}
 		}
+		for (Ship ship : shipsToRemove) {
+			System.out.println("Removing ship: " + ship);
+			allLivingShips.remove(ship);
+			System.out.println("You sank a ship!");
+		}
+		if (allLivingShips.isEmpty()) {
+			System.out.println("All ships are sunk! You win!");
+			return true;
+		}
+		System.out.println("allLivingShips size: " + allLivingShips.size());
 		return false;
 	}
 }
