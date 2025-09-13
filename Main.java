@@ -9,27 +9,73 @@ public class Main {
 
 	public static void main(String[] args) {
 		Main game = new Main();
-		Board board = new Board();
-		board.initBoard();
-		board.logGameField(Board.BoardType.REAL);
 
-		// ask for ships to place
-		game.askForShipAndPlaceWithRetry(game, board, "Aircraft Carrier", 5);
-		game.askForShipAndPlaceWithRetry(game, board, "Battleship", 4);
-		game.askForShipAndPlaceWithRetry(game, board, "Submarine", 3);
-		game.askForShipAndPlaceWithRetry(game, board, "Cruiser", 3);
-		game.askForShipAndPlaceWithRetry(game, board, "Destroyer", 2);
+		Player player1 = new Player("Player 1");
+		Player player2 = new Player("Player 2");
 
-		// start game / shooting
-		System.out.println("The game starts!");
-		board.logGameField(Board.BoardType.HIDDEN);
+		System.out.println(player1.getName() + ", place your ships on the game field");
+		player1.getBoard().initBoard();
+		player1.getBoard().logGameField(Board.BoardType.REAL);
+		game.askForShipAndPlaceWithRetry(game, player1.getBoard(), "Aircraft Carrier", 5);
+		game.askForShipAndPlaceWithRetry(game, player1.getBoard(), "Battleship", 4);
+		game.askForShipAndPlaceWithRetry(game, player1.getBoard(), "Submarine", 3);
+		game.askForShipAndPlaceWithRetry(game, player1.getBoard(), "Cruiser", 3);
+		game.askForShipAndPlaceWithRetry(game, player1.getBoard(), "Destroyer", 2);
 
-		// we want to shoot until every ship was sank
-		boolean allShipsSank = game.askForShotAndShootWithRetry(board);
-		while (!allShipsSank) {
-			allShipsSank = game.askForShotAndShootWithRetry(board);
+		System.out.println("Press Enter and pass the move to another player");
+		game.scanner.nextLine();
+		clearScreen();
+
+		System.out.println(player2.getName() + ", place your ships to the game field");
+		player2.getBoard().initBoard();
+		player2.getBoard().logGameField(Board.BoardType.REAL);
+		game.askForShipAndPlaceWithRetry(game, player2.getBoard(), "Aircraft Carrier", 5);
+		game.askForShipAndPlaceWithRetry(game, player2.getBoard(), "Battleship", 4);
+		game.askForShipAndPlaceWithRetry(game, player2.getBoard(), "Submarine", 3);
+		game.askForShipAndPlaceWithRetry(game, player2.getBoard(), "Cruiser", 3);
+		game.askForShipAndPlaceWithRetry(game, player2.getBoard(), "Destroyer", 2);
+
+		System.out.println("Press Enter and pass the move to another player");
+		game.scanner.nextLine();
+		clearScreen();
+
+		boolean gameOver = false;
+		Player currentPlayer = player1;
+		Player opponent = player2;
+
+		while (!gameOver) {
+			// Show opponent's board (hidden) and current player's board (real)
+			opponent.getBoard().logGameField(Board.BoardType.HIDDEN);
+			System.out.println("---------------------");
+			currentPlayer.getBoard().logGameField(Board.BoardType.REAL);
+
+			System.out.println(currentPlayer.getName() + ", it's your turn:");
+			boolean allShipsSank = game.askForShotAndShootWithRetry(opponent.getBoard());
+
+			if (allShipsSank) {
+				System.out.println(currentPlayer.getName() + " sank the last ship. You won. Congratulations!");
+				gameOver = true;
+			}
+
+			System.out.println("Press Enter and pass the move to another player");
+			game.scanner.nextLine();
+			clearScreen();
+
+			// Swap players
+			Player temp = currentPlayer;
+			currentPlayer = opponent;
+			opponent = temp;
 		}
-		System.out.println("You sank the last ship. You won. Congratulations!");
+	}
+
+
+
+	/**
+	 * Utility method to clear the console screen
+	 */
+	private static void clearScreen() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
 	}
 
 
