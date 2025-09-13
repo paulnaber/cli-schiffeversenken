@@ -23,8 +23,13 @@ public class Main {
 		// start game / shooting
 		System.out.println("The game starts!");
 		board.logGameField(Board.BoardType.HIDDEN);
-		game.askForShotandShootWithRetry(game, board);
 
+		// we want to shoot until every ship was sank
+		boolean allShipsSank = game.askForShotAndShootWithRetry(game, board);
+		while (!allShipsSank) {
+			allShipsSank = game.askForShotAndShootWithRetry(game, board);
+		}
+		System.out.println("You sank the last ship. You won. Congratulations!");
 	}
 
 
@@ -93,9 +98,10 @@ public class Main {
 
 
 	/**
-	 * ask the player to enter a coordinate shoot at the coordinate update the board log
+	 * ask the player to enter a coordinate shoot at the coordinate update the board log if the shot was not successfull
+	 * it will try again until a shot was done returns true if all ships are sank
 	 */
-	private void askForShotandShootWithRetry(Main game, Board board) {
+	public boolean askForShotAndShootWithRetry(Main game, Board board) {
 		System.out.println("Take a shot!");
 
 		boolean shot = false;
@@ -114,11 +120,15 @@ public class Main {
 				System.out.println("You hit a ship!");
 			}
 			else {
+				board.logGameField(Board.BoardType.HIDDEN);
 				System.out.println("You missed!");
 			}
-			board.logGameField(Board.BoardType.REAL);
+			boolean allShipsSank = board.checkAndUpdateLivingShips();
+			if (allShipsSank) {
+				return true;
+			}
 			shot = true;
 		}
+		return false;
 	}
-
 }

@@ -5,16 +5,16 @@ Did this in java just to get a better feel for the language.
 
 ```
   1 2 3 4 5 6 7 8 9 10
-A ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-B ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-C ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-D ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-E ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-F ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-G ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-H ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-I ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-J ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+A X M ~ ~ ~ ~ ~ ~ ~ ~
+B X ~ ~ M ~ ~ M ~ X ~
+C X ~ ~ ~ ~ ~ ~ ~ X ~
+D X ~ ~ ~ ~ M ~ ~ X ~
+E ~ ~ ~ M ~ ~ M ~ M ~
+F M ~ X X X X X M ~ ~
+G ~ ~ ~ ~ ~ ~ M ~ ~ ~
+H ~ M M ~ ~ ~ ~ ~ ~ M
+I ~ X ~ ~ M ~ ~ M ~ ~
+J ~ X ~ ~ ~ ~ M X X X
 ```
 
 ~ water (unkown space, fog)
@@ -23,11 +23,11 @@ J ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 X hit ship  
 M missed
 
--   10 x 10 board
--   Ship validation
--   Coordinate validation
--   Coordintate input line "A1 A3"
--   5 Ships
+- 10 x 10 board
+- Ship validation
+- Coordinate validation
+- Coordintate input line "A1 A3"
+- 5 Ships
 -
 
 Aircraft Carrier is 5 cells

@@ -2,6 +2,7 @@ package battleship;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Coordinate {
 	Integer x = null;
@@ -40,6 +41,7 @@ public class Coordinate {
 
 	/**
 	 * will get "A1" for example and split it
+	 *
 	 * @return Coordinate from it
 	 */
 	public static Coordinate parseCoordinate(String s) {
@@ -49,7 +51,8 @@ public class Coordinate {
 		try {
 			letter = s.replaceAll("[0-9]", "");
 			number = Integer.parseInt(s.replaceAll("[A-Za-z]", ""));
-		} catch (Exception err) {
+		}
+		catch (Exception err) {
 			System.out.println("Error! Failed to parse coordinate!");
 			return null;
 		}
@@ -57,11 +60,41 @@ public class Coordinate {
 	}
 
 
+
 	public static Boolean coordinateIsValid(Coordinate c) {
 		if (c != null) {
 			return yOrder.contains(c.y) && (c.x >= 1 && c.x <= 10);
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
+
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof Coordinate))
+			return false;
+		Coordinate that = (Coordinate) o;
+		return Objects.equals(this.x, that.x) &&
+				Objects.equals(this.y, that.y);
+	}
+
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y);
+	}
+
+
+
+	@Override
+	public String toString() {
+		return y + x;
+	}
+
 }

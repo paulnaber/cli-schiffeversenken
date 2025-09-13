@@ -4,8 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
-	ArrayList<String> gameField       = new ArrayList<>();
-	ArrayList<String> hiddenGameField = new ArrayList<>();
+	ArrayList<String>     gameField         = new ArrayList<>();
+	ArrayList<String>     hiddenGameField   = new ArrayList<>();
+	/**
+	 * - keep track of all ships being alive here - if a shit was fully hit, remove it from this list - once the list is
+	 * empty we know the game is over
+	 */
+	ArrayList<Ship>       allLivingShips    = new ArrayList<>();
+	/**
+	 * keep track of all hits in this array aswell
+	 */
+	ArrayList<Coordinate> allHitCoordinates = new ArrayList<>();
 
 	public static enum BoardType {
 		REAL,
@@ -37,6 +46,7 @@ public class Board {
 	 */
 	public boolean placeShip(Ship ship) {
 		ArrayList<Coordinate> coordinates = ship.allCoordinates;
+		allLivingShips.add(ship);
 
 		for (Coordinate coordinate : coordinates) {
 			int row = coordinate.getYinNumber();
@@ -140,6 +150,7 @@ public class Board {
 		String[] rowArray = gameField.get(row).split(" ");
 		if (shipAtCoordinate) {
 			rowArray[col] = "X";
+			allHitCoordinates.add(coordinate);
 		}
 		else {
 			rowArray[col] = "M";
@@ -148,5 +159,24 @@ public class Board {
 		hiddenGameField.set(row, String.join(" ", rowArray));
 
 		return shipAtCoordinate;
+	}
+
+
+
+	/**
+	 * method to check if a ship was fully hit update the list, do logs also check if all ships sank
+	 */
+	public boolean checkAndUpdateLivingShips() {
+		for (Ship ship : allLivingShips) {
+			boolean shipFullyHit = allHitCoordinates.containsAll(ship.allCoordinates);
+			if (shipFullyHit) {
+				allLivingShips.remove(ship);
+				System.out.println("You sank a ship!");
+			}
+			if (allLivingShips.isEmpty()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
