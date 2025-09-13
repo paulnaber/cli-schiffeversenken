@@ -25,9 +25,9 @@ public class Main {
 		board.logGameField(Board.BoardType.HIDDEN);
 
 		// we want to shoot until every ship was sank
-		boolean allShipsSank = game.askForShotAndShootWithRetry(game, board);
+		boolean allShipsSank = game.askForShotAndShootWithRetry(board);
 		while (!allShipsSank) {
-			allShipsSank = game.askForShotAndShootWithRetry(game, board);
+			allShipsSank = game.askForShotAndShootWithRetry(board);
 		}
 		System.out.println("You sank the last ship. You won. Congratulations!");
 	}
@@ -73,14 +73,6 @@ public class Main {
 
 
 
-	private String askForCoordinates() {
-		System.out.println("Enter the coordinates of the ship:");
-		// example: A1 A2
-		return scanner.nextLine();
-	}
-
-
-
 	private void askForShipAndPlaceWithRetry(Main game, Board board, String name, int size) {
 		boolean placed = false;
 		while (!placed) {
@@ -101,7 +93,7 @@ public class Main {
 	 * ask the player to enter a coordinate shoot at the coordinate update the board log if the shot was not successfull
 	 * it will try again until a shot was done returns true if all ships are sank
 	 */
-	public boolean askForShotAndShootWithRetry(Main game, Board board) {
+	public boolean askForShotAndShootWithRetry(Board board) {
 		System.out.println("Take a shot!");
 
 		boolean shot = false;
@@ -115,12 +107,11 @@ public class Main {
 				continue;
 			}
 			boolean hitShip = board.shoot(targetCoordinate);
+			board.logGameField(Board.BoardType.HIDDEN);
 			if (hitShip) {
-				board.logGameField(Board.BoardType.HIDDEN);
 				System.out.println("You hit a ship!");
 			}
 			else {
-				board.logGameField(Board.BoardType.HIDDEN);
 				System.out.println("You missed!");
 			}
 			boolean allShipsSank = board.checkAndUpdateLivingShips();

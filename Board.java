@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Board {
 	ArrayList<String>     gameField         = new ArrayList<>();
-	ArrayList<String>     hiddenGameField   = new ArrayList<>();
 	/**
 	 * - keep track of all ships being alive here - if a shit was fully hit, remove it from this list - once the list is
 	 * empty we know the game is over
@@ -35,8 +34,6 @@ public class Board {
 		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
 		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
 		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");
-
-		hiddenGameField = new ArrayList<>(gameField);
 	}
 
 
@@ -47,8 +44,9 @@ public class Board {
 	 */
 	public boolean placeShip(Ship ship) {
 		ArrayList<Coordinate> coordinates = ship.allCoordinates;
-		allLivingShips.add(ship);
 
+		// check if shit can be placed
+		// return false otherwise
 		for (Coordinate coordinate : coordinates) {
 			int row = coordinate.getYinNumber();
 			int col = coordinate.x - 1;
@@ -59,6 +57,7 @@ public class Board {
 			}
 		}
 
+		// update the board
 		for (Coordinate coordinate : coordinates) {
 			int row = coordinate.getYinNumber();
 			int col = coordinate.x - 1;
@@ -67,20 +66,30 @@ public class Board {
 			gameField.set(row, String.join(" ", rowArray));
 		}
 
+		// add ship to list only when it was placed
+		allLivingShips.add(ship);
+
 		return true;
 	}
 
 
 
+	/**
+	 * if the boardtype is hidden we want to hide where the ships are at, replace O with ~
+	 */
 	public void logGameField(BoardType boardType) {
 		String firstRow = "  1 2 3 4 5 6 7 8 9 10";
 		ArrayList<String> rowPrefix = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J"));
 		System.out.println(firstRow);
 
-		ArrayList<String> field = boardType.equals(BoardType.HIDDEN) ? hiddenGameField : gameField;
+		boolean hidden = boardType.equals(BoardType.HIDDEN);
 
-		for (int i = 0; i < field.size(); i++) {
-			System.out.println(rowPrefix.get(i) + " " + field.get(i));
+		for (int i = 0; i < gameField.size(); i++) {
+			String fieldRow = gameField.get(i);
+			if (hidden) {
+				fieldRow = fieldRow.replaceAll("O", "~");
+			}
+			System.out.println(rowPrefix.get(i) + " " + fieldRow);
 		}
 	}
 
@@ -124,7 +133,7 @@ public class Board {
 		if (!isInsideBoard(row, col))
 			return false;
 		String[] rowArray = gameField.get(row).split(" ");
-		return rowArray[col].equals("O");
+		return rowArray[col].equals("O") || rowArray[col].equals("X"); // if the shit was already hit it is still there
 	}
 
 
@@ -149,17 +158,14 @@ public class Board {
 
 		boolean shipAtCoordinate = hasShipAt(row, col);
 		String[] rowArray = gameField.get(row).split(" ");
-		String[] hiddenRowArray = gameField.get(row).split(" ");
 		if (shipAtCoordinate) {
 			rowArray[col] = "X";
-			hiddenRowArray[col] = "X";
 			allHitCoordinates.add(coordinate);
 		}
 		else {
 			rowArray[col] = "M";
 		}
 		gameField.set(row, String.join(" ", rowArray));
-		hiddenGameField.set(row, String.join(" ", hiddenRowArray));
 
 		return shipAtCoordinate;
 	}
@@ -171,24 +177,17 @@ public class Board {
 	 */
 	public boolean checkAndUpdateLivingShips() {
 		List<Ship> shipsToRemove = new ArrayList<>();
-		System.out.println("allLivingShips size: " + allLivingShips.size());
-		System.out.println("allHitCoordinates: " + allHitCoordinates);
 		for (Ship ship : allLivingShips) {
-			System.out.println("Checking ship: " + ship);
-			System.out.println("Ship coordinates: " + ship.allCoordinates);
 			boolean shipFullyHit = allHitCoordinates.containsAll(ship.allCoordinates);
-			System.out.println("shipFullyHit: " + shipFullyHit);
 			if (shipFullyHit) {
 				shipsToRemove.add(ship);
 			}
 		}
 		for (Ship ship : shipsToRemove) {
-			System.out.println("Removing ship: " + ship);
 			allLivingShips.remove(ship);
 			System.out.println("You sank a ship!");
 		}
 		if (allLivingShips.isEmpty()) {
-			System.out.println("All ships are sunk! You win!");
 			return true;
 		}
 		System.out.println("allLivingShips size: " + allLivingShips.size());
