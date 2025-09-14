@@ -5,23 +5,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Board {
-	ArrayList<String>     gameField         = new ArrayList<>();
+	ArrayList<String>		gameField			= new ArrayList<>();
 	/**
 	 * - keep track of all ships being alive here - if a shit was fully hit, remove it from this list - once the list is
 	 * empty we know the game is over
 	 */
-	ArrayList<Ship>       allLivingShips    = new ArrayList<>();
+	ArrayList<Ship>			allLivingShips		= new ArrayList<>();
 	/**
 	 * keep track of all hits in this array aswell
 	 */
-	ArrayList<Coordinate> allHitCoordinates = new ArrayList<>();
+	ArrayList<Coordinate>	allHitCoordinates	= new ArrayList<>();
 
 	public static enum BoardType {
 		REAL,
 		HIDDEN
 	}
-
-
 
 	public void initBoard() {
 		gameField.add("~ ~ ~ ~ ~ ~ ~ ~ ~ ~");

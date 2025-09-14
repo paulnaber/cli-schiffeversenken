@@ -1,9 +1,16 @@
 Schiffeversenken cli game  
 https://en.wikipedia.org/wiki/Battleship_(game)
 
-- Did this in java just to get a better feel for the language.
-- TODO: write Tests to secure everything
-- TODO: multiplayer over network
+how to run
+
+```
+mvn clean install -s ~/.m2/settings-clean.xml // ignore company repository
+java -jar target/cli-schiffeversenken-1.0-SNAPSHOT.jar
+```
+
+-   Did this in java just to get a better feel for the language.
+-   TODO: write Tests to secure everything
+-   TODO: multiplayer over network
 
 ```
   1 2 3 4 5 6 7 8 9 10
@@ -24,12 +31,12 @@ J ~ X ~ ~ ~ ~ M X X X
 X hit ship  
 M missed
 
-- 10 x 10 board
-- Ship validation
-- Coordinate validation
-- Coordintate input line "A1 A3"
-- 5 Ships
-- local 2 player
+-   10 x 10 board
+-   Ship validation
+-   Coordinate validation
+-   Coordintate input line "A1 A3"
+-   5 Ships
+-   local 2 player
 
 Aircraft Carrier is 5 cells
 Battleship is 4 cells

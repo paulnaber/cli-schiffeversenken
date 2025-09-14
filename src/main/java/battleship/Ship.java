@@ -3,12 +3,10 @@ package battleship;
 import java.util.ArrayList;
 
 public class Ship {
-	Coordinate            start          = null;
-	Coordinate            end            = null;
-	Integer               length         = null;
-	ArrayList<Coordinate> allCoordinates = new ArrayList<>();
-
-
+	Coordinate				start			= null;
+	Coordinate				end				= null;
+	Integer					length			= null;
+	ArrayList<Coordinate>	allCoordinates	= new ArrayList<>();
 
 	public Ship(Coordinate start, Coordinate end) {
 		this.start = start;
@@ -25,8 +23,8 @@ public class Ship {
 		}
 		// vertical ship
 		if (start.x.equals(end.x)) {
-			var se = start.getYinNumber() - end.getYinNumber();
-			var es = end.getYinNumber() - start.getYinNumber();
+			int se = start.getYinNumber() - end.getYinNumber();
+			int es = end.getYinNumber() - start.getYinNumber();
 
 			// calculate the all coordinates
 			if (start.getYinNumber() > end.getYinNumber()) {
@@ -46,8 +44,8 @@ public class Ship {
 
 		// horizontal ship
 		if (start.y.equals(end.y)) {
-			var se = start.x - end.x;
-			var es = end.x - start.x;
+			int se = start.x - end.x;
+			int es = end.x - start.x;
 
 			// calculate the all coordinates
 			if (start.x > end.x) {

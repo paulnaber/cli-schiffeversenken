@@ -5,11 +5,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Coordinate {
-	Integer x = null;
-	String  y = null;
-	static ArrayList<String> yOrder = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J"));
-
-
+	Integer						x		= null;
+	String						y		= null;
+	static ArrayList<String>	yOrder	= new ArrayList<>(
+			Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J"));
 
 	public Coordinate(String y, Integer x) {
 		this.x = x;

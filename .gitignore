@@ -1,0 +1,10 @@
+# Maven target directory
+/target/
+
+# IDE files
+*.iml
+.idea/
+*.classpath
+*.project
+*.settings/
+.vscode/
